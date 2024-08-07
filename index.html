@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        let identitiesVisible = false; // Track the visibility state
+        let complexConditionsVisible = false; // Track the visibility state for complex conditions
+        let basicOperationsVisible = false; // Track the visibility state for basic operations
+
+        async function calculate(operation, a, b) {
+            const response = await fetch(`/api/${operation}?a=${a}&b=${b}`);
+            const result = await response.text();
+            document.getElementById(`${operation}-result`).innerText = `Result: ${result}`;
+        }
+
+        function handleComplexCalculation(operation) {
+            const a = document.getElementById(`${operation}-a`).value;
+            const b = document.getElementById(`${operation}-b`) ? document.getElementById(`${operation}-b`).value : null;
+            calculate(operation, a, b);
+        }
+
+        function toggleTrigonometricIdentities() {
+            const identitiesDiv = document.getElementById('identities');
+            const button = document.getElementById('trig-button');
+
+            if (identitiesVisible) {
+                identitiesDiv.style.display = 'none';
+                button.innerText = 'Show Trigonometric Identities';
+            } else {
+                const identities = `
+                    <h2>Trigonometric Identities</h2>
+                    <ul>
+                        <li><strong>sin²(θ) + cos²(θ) = 1</strong></li>
+                        <li><strong>1 + tan²(θ) = sec²(θ)</strong></li>
+                        <li><strong>1 + cot²(θ) = csc²(θ)</strong></li>
+                        <li><strong>sin(2θ) = 2 sin(θ) cos(θ)</strong></li>
+                        <li><strong>cos(2θ) = cos²(θ) - sin²(θ)</strong></li>
+                        <li><strong>tan(2θ) = (2 tan(θ)) / (1 - tan²(θ))</strong></li>
+                        <li><strong>sin(θ) = opposite / hypotenuse</strong></li>
+                        <li><strong>cos(θ) = adjacent / hypotenuse</strong></li>
+                        <li><strong>tan(θ) = opposite / adjacent</strong></li>
+                    </ul>
+                `;
+                identitiesDiv.innerHTML = identities;
+                identitiesDiv.style.display = 'block';
+                button.innerText = 'Hide Trigonometric Identities';
+            }
+            identitiesVisible = !identitiesVisible; // Toggle the state
+        }
+
+        function toggleComplexConditions() {
+            const complexConditionsDiv = document.getElementById('complex-conditions');
+            const button = document.getElementById('complex-button');
+
+            if (complexConditionsVisible) {
+                complexConditionsDiv.style.display = 'none';
+                button.innerText = 'Show Other Complex Conditions';
+            } else {
+                const conditions = `
+                    <h2>Other Complex Conditions</h2>
+                    <div class="condition-group">
+                        <h3>Square Root</h3>
+                        <input type="number" id="sqrt-a" placeholder="Enter number" class="input-field">
+                        <button onclick="handleComplexCalculation('sqrt')">Calculate Square Root</button>
+                        <div id="sqrt-result" class="result">Result: </div>
+                    </div>
+                    <div class="condition-group">
+                        <h3>Logarithm</h3>
+                        <input type="number" id="log-a" placeholder="Enter number" class="input-field">
+                        <button onclick="handleComplexCalculation('log')">Calculate Logarithm</button>
+                        <div id="log-result" class="result">Result: </div>
+                    </div>
+                    <div class="condition-group">
+                        <h3>Sine</h3>
+                        <input type="number" id="sin-a" placeholder="Enter angle in radians" class="input-field">
+                        <button onclick="handleComplexCalculation('sin')">Calculate Sine</button>
+                        <div id="sin-result" class="result">Result: </div>
+                    </div>
+                    <div class="condition-group">
+                        <h3>Cosine</h3>
+                        <input type="number" id="cos-a" placeholder="Enter angle in radians" class="input-field">
+                        <button onclick="handleComplexCalculation('cos')">Calculate Cosine</button>
+                        <div id="cos-result" class="result">Result: </div>
+                    </div>
+                    <div class="condition-group">
+                        <h3>Tangent</h3>
+                        <input type="number" id="tan-a" placeholder="Enter angle in radians" class="input-field">
+                        <button onclick="handleComplexCalculation('tan')">Calculate Tangent</button>
+                        <div id="tan-result" class="result">Result: </div>
+                    </div>
+                    <div class="condition-group">
+                        <h3>Factorial</h3>
+                        <input type="number" id="factorial-a" placeholder="Enter number" class="input-field">
+                        <button onclick="handleComplexCalculation('factorial')">Calculate Factorial</button>
+                        <div id="factorial-result" class="result">Result: </div>
+                    </div>
+                `;
+                complexConditionsDiv.innerHTML = conditions;
+                complexConditionsDiv.style.display = 'block';
+                button.innerText = 'Hide Other Complex Conditions';
+            }
+            complexConditionsVisible = !complexConditionsVisible; // Toggle the state
+        }
+
+        function toggleBasicOperations() {
+            const basicOperationsDiv = document.getElementById('basic-operations');
+            const button = document.getElementById('basic-button');
+
+            if (basicOperationsVisible) {
+                basicOperationsDiv.style.display = 'none';
+                button.innerText = 'Show Basic Operations';
+            } else {
+                const operations = `
+                    <h2>Basic Operations</h2>
+                    <div class="operation-group">
+                        <h3>Add</h3>
+                        <input type="number" id="add-a" placeholder="Enter number a" class="input-field">
+                        <input type="number" id="add-b" placeholder="Enter number b" class="input-field">
+                        <button onclick="handleComplexCalculation('add')">Calculate Add</button>
+                        <div id="add-result" class="result">Result: </div>
+                    </div>
+                    <div class="operation-group">
+                        <h3>Subtract</h3>
+                        <input type="number" id="subtract-a" placeholder="Enter number a" class="input-field">
+                        <input type="number" id="subtract-b" placeholder="Enter number b" class="input-field">
+                        <button onclick="handleComplexCalculation('subtract')">Calculate Subtract</button>
+                        <div id="subtract-result" class="result">Result: </div>
+                    </div>
+                    <div class="operation-group">
+                        <h3>Multiply</h3>
+                        <input type="number" id="multiply-a" placeholder="Enter number a" class="input-field">
+                        <input type="number" id="multiply-b" placeholder="Enter number b" class="input-field">
+                        <button onclick="handleComplexCalculation('multiply')">Calculate Multiply</button>
+                        <div id="multiply-result" class="result">Result: </div>
+                    </div>
+                    <div class="operation-group">
+                        <h3>Divide</h3>
+                        <input type="number" id="divide-a" placeholder="Enter number a" class="input-field">
+                        <input type="number" id="divide-b" placeholder="Enter number b" class="input-field">
+                        <button onclick="handleComplexCalculation('divide')">Calculate Divide</button>
+                        <div id="divide-result" class="result">Result: </div>
+                    </div>
+                `;
+                basicOperationsDiv.innerHTML = operations;
+                basicOperationsDiv.style.display = 'block';
+                button.innerText = 'Hide Basic Operations';
+            }
+            basicOperationsVisible = !basicOperationsVisible; // Toggle the state
+        }
+
+        function showMainMenu() {
+            document.getElementById('main-menu').style.display = 'block';
+            document.getElementById('basic-operations').style.display = 'none';
+            document.getElementById('complex-conditions').style.display = 'none';
+            document.getElementById('identities').style.display = 'none';
+        }
+    </script>
+</head>
+<body>
+<div class="container" id="main-menu">
+    <h1>Cyberpunk Calculator</h1>
+    <h2>By The Animesh Gupta</h2>
+    <div class="button-group">
+        <button id="basic-button" onclick="toggleBasicOperations()">Show Basic Operations</button>
+        <button id="trig-button" onclick="toggleTrigonometricIdentities()">Show Trigonometric Identities</button>
+        <button id="complex-button" onclick="toggleComplexConditions()">Show Other Complex Conditions</button>
+    </div>
+    <div id="basic-operations" class="basic-operations"></div>
+    <div id="identities" class="identities"></div>
+    <div id="complex-conditions" class="complex-conditions"></div>
+    <div class="bottom-buttons">
+        <button class="back-button" onclick="showMainMenu()">Back to Menu</button>
+    </div>
+</div>
+</body>
+</html>
